@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Web/Web.csproj" />
+  <Project Path="WebApp/WebApp.csproj" Id="0be46cd5-d96e-43d2-9640-4554d0abcecb" />
+  <Project Path="WebApp_Security/WebApp_Security.csproj" Id="0a06b487-0d38-44cc-b7f9-4473ee90f5ac" />
+</Solution>
