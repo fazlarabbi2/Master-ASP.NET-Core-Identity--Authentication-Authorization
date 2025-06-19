@@ -32,7 +32,7 @@ namespace WebApp
                 options.LoginPath = "/Account/Login";
                 options.AccessDeniedPath = "/Account/AccessDenied";
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-            })
+            });
 
             var app = builder.Build();
 

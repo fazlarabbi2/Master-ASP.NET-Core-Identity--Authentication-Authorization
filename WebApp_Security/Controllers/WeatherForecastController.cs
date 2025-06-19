@@ -5,7 +5,7 @@ namespace WebApp_Security.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize(policy:"AdminOnly")]
+    [Authorize(policy: "AdminOnly")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
