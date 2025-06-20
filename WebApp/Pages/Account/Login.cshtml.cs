@@ -5,28 +5,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Pages.Account
 {
-    public class LoginModel(SignInManager<IdentityUser> signInManager) : PageModel
+    public class LoginModel(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager) : PageModel
     {
-        private readonly SignInManager<IdentityUser> signInManager = signInManager;
 
         [BindProperty]
-        public CredentialViewModel credentialViewModel { get; set; }
+        public CredentialViewModel credential { get; set; }
 
         public void OnGet()
         {
         }
-
-        //public IActionResult OnPost()
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return Page();
-        //    }
-
-        //    // Add your login logic here.  
-        //    return RedirectToPage("/Index");
-        //}
-
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -35,11 +22,20 @@ namespace WebApp.Pages.Account
                 return Page();
             }
 
+            var user = await userManager.FindByEmailAsync(credential.Email);
+            if (user == null)
+            {
+                ModelState.AddModelError("Login", "User not found.");
+                return Page();
+            }
+
+            var userFailedAttempts = await userManager.GetAccessFailedCountAsync(user);
+
             var result = await signInManager.PasswordSignInAsync(
-                this.credentialViewModel.Email,
-                this.credentialViewModel.Password,
-                this.credentialViewModel.RememberMe
-                , false);
+                credential.Email,
+                credential.Password,
+                credential.RememberMe,
+                false);
 
             if (result.Succeeded)
             {

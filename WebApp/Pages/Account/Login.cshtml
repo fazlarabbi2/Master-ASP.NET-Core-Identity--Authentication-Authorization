@@ -7,31 +7,35 @@
         <div class="text-danger" asp-validation-summary="All"></div>
         <div class="row mb-3">
             <div class="col-2">
-                <label asp-for="credentialViewModel.Email"></label>
+                <label asp-for="credential.Email"></label>
             </div>
             <div class="col-5">
-                <input asp-for="credentialViewModel.Email" class="form-control" />
-                <span class="text-danger" asp-validation-for="credentialViewModel.Email"></span>
+                <input asp-for="credential.Email" class="form-control" />
+                <span class="text-danger" asp-validation-for="credential.Email"></span>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col-2">
-                <label asp-for="credentialViewModel.Password"></label>
+                <label asp-for="credential.Password"></label>
             </div>
             <div class="col-5">
-                <input type="password" asp-for="credentialViewModel.Password" class="form-control" />
-                <span class="text-danger" asp-validation-for="credentialViewModel.Password"></span>
+                <input type="password" asp-for="credential.Password" class="form-control" />
+                <span class="text-danger" asp-validation-for="credential.Password"></span>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col-2">
-                <input type="checkbox" class="form-check-input" asp-for="credentialViewModel.RememberMe" />
-                <label class="form-check-label" asp-for="credentialViewModel.RememberMe"></label>
+                <input type="checkbox" class="form-check-input" asp-for="credential.RememberMe" />
+                <label class="form-check-label" asp-for="credential.RememberMe"></label>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col-2">
                 <input type="submit" class="btn btn-primary" value="Login" />
+            </div>
+
+            <div class="col-2">
+                <a href="/Account/Register" class="btn btn-link">Sign Up</a>
             </div>
         </div>
     </form>

@@ -22,10 +22,14 @@ namespace WebApp
                 options.Password.RequiredLength = 6;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireUppercase = true;
+                //options.
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+                options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedEmail = true;
             })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             builder.Services.ConfigureApplicationCookie(options =>
             {
