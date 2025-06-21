@@ -8,15 +8,16 @@ namespace WebApp.Pages.Account
     {
         [BindProperty]
         public string Message { get; set; } = string.Empty;
+
         public async Task<IActionResult> OnGetAsync(string userId, string token)
         {
             var user = await userManager.FindByIdAsync(userId);
 
             if (user != null)
             {
-                var result = userManager.ConfirmEmailAsync(user, token);
-
-                if (user != null)
+                var result = await userManager.ConfirmEmailAsync(user, token); // Await the Task<IdentityResult>
+    
+                if (result.Succeeded) // Access the Succeeded property of IdentityResult
                 {
                     Message = "Email is successfully confirmed, you can try to login";
                     return Page();
