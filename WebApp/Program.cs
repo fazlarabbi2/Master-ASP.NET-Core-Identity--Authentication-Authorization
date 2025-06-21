@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
+using WebApp.Services;
+using WebApp.Settings;
 
 namespace WebApp
 {
@@ -17,6 +19,7 @@ namespace WebApp
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
             builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 6;
@@ -37,6 +40,9 @@ namespace WebApp
                 options.AccessDeniedPath = "/Account/AccessDenied";
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
             });
+
+            builder.Services.Configure<SmtpSetting>(builder.Configuration.GetSection("SMTP"));
+            builder.Services.AddSingleton<IEmailService, EmailService>();
 
             var app = builder.Build();
 

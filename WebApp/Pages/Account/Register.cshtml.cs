@@ -2,18 +2,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
+using System.Net.Mail;
+using System.Net.NetworkInformation;
+using WebApp.Services;
 
 namespace WebApp.Pages.Account
 {
-    public class RegisterModel : PageModel
+    public class RegisterModel(UserManager<IdentityUser> userManager, IEmailService emailService) : PageModel
     {
-        private readonly UserManager<IdentityUser> userManager;
-
-        public RegisterModel(UserManager<IdentityUser> userManager)
-        {
-            this.userManager = userManager;
-        }
-
         [BindProperty]
         public RegisterViewModel ViewModel { get; set; } = new RegisterViewModel();
 
@@ -35,12 +32,21 @@ namespace WebApp.Pages.Account
                 UserName = ViewModel.Email
             };
 
-            var result = await this.userManager.CreateAsync(user, ViewModel.Password);
+            var result = await userManager.CreateAsync(user, ViewModel.Password);
 
             if (result.Succeeded)
             {
-                var confirmationToen = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
-                return Redirect(Url.PageLink(pageName: "/Account/ConfirmEmail", values: new { userId = user.Id, token = confirmationToen }) ?? "");
+                var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                var confirmationLink = Url.Page(
+                    "/Account/ConfirmEmail",
+                    pageHandler: null,
+                    values: new { userId = user.Id, token = confirmationToken },
+                    protocol: Request.Scheme);
+
+                await emailService.SendAsync("rabbifazla4@gmail.com",
+                    user.Email,
+                    "Please confirm your email",
+                    $"Please click on this link to confirm your email address: {confirmationLink}");
 
                 return RedirectToPage("/Account/Login");
             }
